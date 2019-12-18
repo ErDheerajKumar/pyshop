@@ -8,6 +8,10 @@ STATE_CHOICES = (
     ('', 'Choose'),
     ('RJ', 'Rajasthan')
 )
+CITY_CHOICES = (
+    ('', 'Choose'),
+    ('BHL', 'Bhilwara')
+)
 PIN_CHOICES = (
     ('', 'Choose'),
     ('311001', '311001')
@@ -20,25 +24,41 @@ PAYMENT_CHOICES = (
 
 
 class CheckoutForm(forms.Form):
-    address_line_1 = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'House no. , colony',
-        'class': 'form-control'
-    }))
-    address_line_2 = forms.CharField(required=False, widget=forms.TextInput(attrs={
-        'placeholder': "Apartment or Landmark",
-        'class': 'form-control'
-    }))
-    country = forms.ChoiceField(choices=COUNTRY_CHOICES, widget=forms.Select(attrs={
+    shipping_address_1 = forms.CharField(required=False)
+    shipping_address_2 = forms.CharField(required=False)
+    shipping_country = forms.ChoiceField(required=False, choices=COUNTRY_CHOICES, widget=forms.Select(attrs={
         'class': 'custom-select d-block w-100'
     }))
-    state = forms.ChoiceField(choices=STATE_CHOICES, widget=forms.Select(attrs={
+    shipping_state = forms.ChoiceField(required=False, choices=STATE_CHOICES, widget=forms.Select(attrs={
         'class': 'custom-select d-block w-100'
     }))
-    pin_code = forms.ChoiceField(choices=PIN_CHOICES, widget=forms.Select(attrs={
+    shipping_city = forms.ChoiceField(required=False, choices=CITY_CHOICES, widget=forms.Select(attrs={
         'class': 'custom-select d-block w-100'
     }))
-    same_shipping_address = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
-    save_info = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+    shipping_pin_code = forms.ChoiceField(required=False, choices=PIN_CHOICES, widget=forms.Select(attrs={
+        'class': 'custom-select d-block w-100'
+    }))
+
+    billing_address_1 = forms.CharField(required=False)
+    billing_address_2 = forms.CharField(required=False)
+    billing_country = forms.ChoiceField(required=False, choices=COUNTRY_CHOICES, widget=forms.Select(attrs={
+        'class': 'custom-select d-block w-100'
+    }))
+    billing_state = forms.ChoiceField(required=False, choices=STATE_CHOICES, widget=forms.Select(attrs={
+        'class': 'custom-select d-block w-100'
+    }))
+    billing_city = forms.ChoiceField(required=False, choices=CITY_CHOICES, widget=forms.Select(attrs={
+        'class': 'custom-select d-block w-100'
+    }))
+    billing_pin_code = forms.ChoiceField(required=False, choices=PIN_CHOICES, widget=forms.Select(attrs={
+        'class': 'custom-select d-block w-100'
+    }))
+
+    same_billing_address = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+    set_default_shipping = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+    use_default_shipping = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+    set_default_billing = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
+    use_default_billing = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
     payment_option = forms.ChoiceField(widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
 
 
@@ -50,3 +70,10 @@ class CouponForm(forms.Form):
         'aria - describedby': 'basic-addon2'
     }))
 
+
+class ReturnForm(forms.Form):
+    order_id = forms.CharField()
+    message = forms.CharField(widget=forms.Textarea(attrs={
+                                                    'rows': 5
+                                                    }))
+    email = forms.EmailField()
